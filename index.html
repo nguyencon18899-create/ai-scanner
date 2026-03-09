@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI Scanner Mobile</title>
+    <style>
+        body { margin: 0; background: #000; color: #0f0; font-family: monospace; text-align: center; }
+        #video { width: 100%; height: 80vh; object-fit: cover; }
+        .frame { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 200px; height: 300px; border: 2px solid #0f0; box-shadow: 0 0 15px #0f0;
+        }
+        .scan-line {
+            position: absolute; width: 100%; height: 2px; background: #0f0;
+            box-shadow: 0 0 10px #0f0; animation: move 2s infinite;
+        }
+        @keyframes move { 0% { top: 0; } 100% { top: 100%; } }
+        #btn { padding: 15px; background: #0f0; color: #000; border: none; font-weight: bold; width: 100%; position: fixed; bottom: 0; }
+    </style>
+</head>
+<body>
+    <video id="video" autoplay playsinline></video>
+    <div class="frame"><div class="scan-line"></div></div>
+    <div id="result" style="position:fixed; top:10px; width:100%; background:rgba(0,0,0,0.5);">Đang chờ mục tiêu...</div>
+    <button id="btn" onclick="scan()">BẮT ĐẦU QUÉT AI</button>
+
+    <script>
+        const video = document.getElementById('video');
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+            .then(s => { video.srcObject = s; });
+
+        function scan() {
+            document.getElementById('result').innerText = "Đang phân tích cấu trúc...";
+            setTimeout(() => {
+                const rs = ["Quân bài: Át Bích", "Quân bài: 10 Cơ", "Cấu trúc: Nhựa/Giấy"];
+                document.getElementById('result').innerText = "KẾT QUẢ: " + rs[Math.floor(Math.random()*rs.length)];
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
+
