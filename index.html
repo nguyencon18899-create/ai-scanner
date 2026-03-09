@@ -1,0 +1,84 @@
+# ai-scanner
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI Card Vision</title>
+    <style>
+        body { margin: 0; background: #000; color: white; font-family: Arial; text-align: center; overflow: hidden; }
+        #video { width: 100vw; height: 100vh; object-fit: cover; }
+        
+        /* Khung quét AI */
+        .scanner-frame {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px; height: 350px;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 20px #00ff00;
+            border-radius: 15px;
+            z-index: 10;
+        }
+
+        /* Hiệu ứng tia quét chạy lên xuống */
+        .laser {
+            position: absolute; width: 100%; height: 2px;
+            background: rgba(0, 255, 0, 0.8);
+            box-shadow: 0 0 15px #00ff00;
+            animation: scan 2s infinite linear;
+        }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+
+        .info-box {
+            position: absolute; bottom: 50px; left: 0; right: 0;
+            background: rgba(0,0,0,0.7); padding: 15px; z-index: 20;
+        }
+        button {
+            padding: 10px 20px; background: #00ff00; border: none;
+            border-radius: 5px; font-weight: bold; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <video id="video" autoplay playsinline></video>
+    
+    <div class="scanner-frame">
+        <div class="laser"></div>
+    </div>
+
+    <div class="info-box">
+        <div id="result">Đang chờ mục tiêu...</div>
+        <br>
+        <button onclick="analyze()">PHÂN TÍCH CẤU TRÚC</button>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const result = document.getElementById('result');
+
+        // Mở Camera sau của điện thoại
+        navigator.mediaDevices.getUserMedia({ 
+            video: { facingMode: "environment" } 
+        }).then(stream => {
+            video.srcObject = stream;
+        }).catch(err => {
+            alert("Vui lòng cho phép quyền truy cập Camera!");
+        });
+
+        // Giả lập AI phân tích (Bạn có thể nâng cấp bằng OpenCV.js sau)
+        function analyze() {
+            result.innerText = "Đang quét dữ liệu quân bài...";
+            result.style.color = "#ffff00";
+            
+            setTimeout(() => {
+                // Đây là nơi AI đưa ra dự đoán cấu trúc
+                const predictions = ["Át Bích (Dự đoán 85%)", "10 Cơ (Dự đoán 92%)", "Cấu trúc: Giấy Plastic"];
+                const random = predictions[Math.floor(Math.random() * predictions.length)];
+                result.innerText = "KẾT QUẢ: " + random;
+                result.style.color = "#00ff00";
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
